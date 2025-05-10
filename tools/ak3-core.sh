@@ -175,8 +175,8 @@ unpack_ramdisk() {
   cd $RAMDISK;
   EXTRACT_UNSAFE_SYMLINKS=1 cpio -d -F $SPLITIMG/ramdisk.cpio -i;
   if [ $? != 0 -o ! "$(ls)" ]; then
-    abort "Unpacking ramdisk failed. Aborting...";
-  fi;
+    echo "Unpacking ramdisk failed.";
+    fi;
   if [ -d "$AKHOME/rdtmp" ]; then
     cp -af $AKHOME/rdtmp/* .;
   fi;
@@ -225,7 +225,7 @@ repack_ramdisk() {
   if [ "$comp" ]; then
     magiskboot compress=$comp ramdisk-new.cpio;
     if [ $? != 0 ] && $comp --help 2>/dev/null; then
-      echo "Attempting ramdisk repack with busybox $comp..." >&2;
+      echo "Repacking ramdisk failed.";
       $comp -9c ramdisk-new.cpio > ramdisk-new.cpio.$comp;
       [ $? != 0 ] && packfail=1;
       rm -f ramdisk-new.cpio;
